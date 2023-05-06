@@ -8,9 +8,10 @@ from QtImageViewer import QtImageViewer
 
 
 class TreeItem(QTreeWidgetItem):
-    def __init__(self, str=""):
+    def __init__(self, path=""):
         super().__init__()
-        self.setText(0, str)
+        self.dir = QDir(path)
+        self.setText(0, self.dir.dirName())
 
 
 class ApplicationWindow(QtWidgets.QMainWindow):
@@ -20,6 +21,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.ui.centralwidget.setFocus()
         self.ui.btnOpenFolder.clicked.connect(self.OpenFolder)  # type: ignore
+        self.ui.treeWidget.itemClicked.connect(self.fileSelected)  # type: ignore
 
         ### --- ### --- ###
         self.viewer = QtImageViewer()
@@ -30,7 +32,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         dir = QDir(path)
 
         # Create root item
-        item = TreeItem(dir.dirName())
+        item = TreeItem(path)
 
         # If the folder is empty, we return root item
         if dir.count() == 2:
@@ -38,11 +40,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         # We filter files then add those files to the root item
         fileList = dir.entryInfoList(QDir.Filter(QDir.Files))
-        children = map(lambda x: TreeItem(x.fileName()), fileList)
+        children = map(lambda file: TreeItem(file.absoluteFilePath()), fileList)
         item.addChildren(list(children))
 
-        # We filter folders then add those folders to the root item
-        # We run addFolder recursively
+        # We filter folders then add to the root item
+        # We run addFolder recursively to find all the sub-folders
         folderList = dir.entryInfoList(QDir.Filter(QDir.AllDirs | QDir.NoDotAndDotDot))
         items = []
         for folder in folderList:
@@ -51,6 +53,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         item.addChildren(items)
 
         return item
+
+    @QtCore.pyqtSlot(QTreeWidgetItem)
+    def fileSelected(self, item):
+        path = item.dir.absolutePath()
+        print(path)
+        self.viewer.open(path)
 
     @QtCore.pyqtSlot()
     def OpenFolder(self):
