@@ -20,14 +20,16 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.centralwidget.setFocus()
-        self.ui.btnOpenFolder.clicked.connect(self.OpenFolder)  # type: ignore
+        self.ui.btnOpenFolder.clicked.connect(self.openFolder)  # type: ignore
         self.ui.treeWidget.itemClicked.connect(self.fileSelected)  # type: ignore
 
         ### --- ### --- ###
         self.viewer = QtImageViewer()
         self.ui.mid.addWidget(self.viewer)
+        self.ui.treeWidget.itemCount = 0
 
     def addFolder(self, path):
+        """Return TreeItem object"""
         # Create QDir object
         dir = QDir(path)
 
@@ -42,6 +44,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         fileList = dir.entryInfoList(QDir.Filter(QDir.Files))
         children = map(lambda file: TreeItem(file.absoluteFilePath()), fileList)
         item.addChildren(list(children))
+        self.ui.treeWidget.itemCount += len(fileList)
+        print(self.ui.treeWidget.itemCount)
 
         # We filter folders then add to the root item
         # We run addFolder recursively to find all the sub-folders
@@ -49,7 +53,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         items = []
         for folder in folderList:
             items.append(self.addFolder(folder.absoluteFilePath()))
-
         item.addChildren(items)
 
         return item
@@ -61,7 +64,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.viewer.open(path)
 
     @QtCore.pyqtSlot()
-    def OpenFolder(self):
+    def openFolder(self):
         # Open file dialog to get the path
         path = QFileDialog.getExistingDirectory(
             self,
@@ -69,11 +72,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             QDir.currentPath(),
             QFileDialog.ShowDirsOnly | QFileDialog.DontResolveSymlinks,
         )
+        # Set the path in UI
+        self.ui.labelPath.setText(path)
 
-        # Init tree
-        treeWidget = self.ui.treeWidget
-        treeWidget.setColumnCount(1)
-
-        # Add path as an item to tree
+        # Init root item
+        rootItem = self.ui.treeWidget.invisibleRootItem()
+        # Add item to tree
         item = self.addFolder(path)
-        treeWidget.insertTopLevelItem(0, item)  # type: ignore
+        rootItem.addChild(item)
+        # Set the number of img in UI
+        self.ui.labelTotalImg.setText(str(self.ui.treeWidget.itemCount))
