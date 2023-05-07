@@ -24,9 +24,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.treeWidget.itemClicked.connect(self.fileSelected)  # type: ignore
 
         ### --- ### --- ###
+        # Add image viewer
         self.viewer = QtImageViewer()
         self.ui.mid.addWidget(self.viewer)
+
+        # Define global variables
         self.ui.treeWidget.itemCount = 0
+        self.fileExtension = ["*.jpg", "*.bmp"]
 
     def addFolder(self, path):
         """Return TreeItem object"""
@@ -41,7 +45,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             return item
 
         # We filter files then add those files to the root item
-        fileList = dir.entryInfoList(QDir.Filter(QDir.Files))
+        fileList = dir.entryInfoList(self.fileExtention, QDir.Filter(QDir.Files))
         children = map(lambda file: TreeItem(file.absoluteFilePath()), fileList)
         item.addChildren(list(children))
         self.ui.treeWidget.itemCount += len(fileList)

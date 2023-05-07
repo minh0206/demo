@@ -21,7 +21,9 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.top = QtWidgets.QHBoxLayout()
         self.top.setObjectName("top")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.top.addItem(spacerItem)
         self.btnOpenFolder = QtWidgets.QPushButton(self.centralwidget)
         self.btnOpenFolder.setObjectName("btnOpenFolder")
@@ -32,7 +34,9 @@ class Ui_MainWindow(object):
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_3.setObjectName("pushButton_3")
         self.top.addWidget(self.pushButton_3)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.top.addItem(spacerItem1)
         self.verticalLayout.addLayout(self.top)
         self.bottom = QtWidgets.QHBoxLayout()
@@ -48,7 +52,9 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.left.addWidget(self.label)
         self.treeWidget = QtWidgets.QTreeWidget(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.treeWidget.sizePolicy().hasHeightForWidth())
@@ -89,9 +95,15 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         self.labelTotalImg.setFont(font)
-        self.labelTotalImg.setText("")
         self.labelTotalImg.setObjectName("labelTotalImg")
-        self.gridLayout.addWidget(self.labelTotalImg, 0, 1, 1, 1)
+        self.gridLayout.addWidget(
+            self.labelTotalImg,
+            0,
+            1,
+            1,
+            1,
+            QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter,
+        )
         self.left.addLayout(self.gridLayout)
         self.bottom.addLayout(self.left)
         self.mid = QtWidgets.QVBoxLayout()
@@ -100,7 +112,9 @@ class Ui_MainWindow(object):
         self.right = QtWidgets.QVBoxLayout()
         self.right.setObjectName("right")
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.tabWidget.sizePolicy().hasHeightForWidth())
@@ -126,26 +140,32 @@ class Ui_MainWindow(object):
         self.actionaaa.setObjectName("actionaaa")
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.btnOpenFolder.setText(_translate("MainWindow", "Open folder"))
-        self.pushButton_2.setText(_translate("MainWindow", "PushButton"))
-        self.pushButton_3.setText(_translate("MainWindow", "PushButton"))
+        self.pushButton_2.setText(_translate("MainWindow", "Inspect"))
+        self.pushButton_3.setText(_translate("MainWindow", "Stop inspect"))
         self.label.setText(_translate("MainWindow", "Input"))
         self.label_2.setText(_translate("MainWindow", "Folder Infomation"))
         self.label_4.setText(_translate("MainWindow", "Total Image Files"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
+        self.labelTotalImg.setText(_translate("MainWindow", "0"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Statistics")
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Tab 2")
+        )
         self.pushButton_4.setText(_translate("MainWindow", "PushButton"))
         self.actionaaa.setText(_translate("MainWindow", "aaa"))
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
