@@ -150,17 +150,17 @@ class QtImageViewer(QGraphicsView):
         #   Qt.ScrollBarAlwaysOff: Never shows a scroll bar.
         #   Qt.ScrollBarAlwaysOn: Always shows a scroll bar.
         #   Qt.ScrollBarAsNeeded: Shows a scroll bar only when zoomed.
-        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
 
         # Interactions (set buttons to None to disable interactions)
         # !!! Events handled by interactions will NOT emit *MouseButton* signals.
         #     Note: regionZoomButton will still emit a *MouseButtonReleased signal on a click (i.e. tiny box).
-        self.regionZoomButton = Qt.MouseButton.LeftButton  # Drag a zoom box.
+        self.regionZoomButton = Qt.MouseButton.RightButton  # Drag a zoom box.
         self.zoomOutButton = (
-            Qt.MouseButton.RightButton
+            Qt.MouseButton.MiddleButton
         )  # Pop end of zoom stack (double click clears zoom stack).
-        self.panButton = Qt.MouseButton.MiddleButton  # Drag to pan.
+        self.panButton = Qt.MouseButton.LeftButton  # Drag to pan.
         self.wheelZoomFactor = 1.25  # Set to None or 1 to disable mouse wheel zoom.
 
         # Stack of QRectF zoom boxes in scene coordinates.
