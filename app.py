@@ -45,7 +45,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             return item
 
         # We filter files then add those files to the root item
-        fileList = dir.entryInfoList(self.fileExtention, QDir.Filter(QDir.Files))
+        fileList = dir.entryInfoList(self.fileExtension, QDir.Filter(QDir.Files))
         children = map(lambda file: TreeItem(file.absoluteFilePath()), fileList)
         item.addChildren(list(children))
         self.ui.treeWidget.itemCount += len(fileList)
